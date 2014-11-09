@@ -1,0 +1,17 @@
+randomly pick a winning combination of colors/positions []
+# define sequence(colors)
+# get user input
+# check to see if input is correct vs incorrect
+# define valid vs invalidate guesses (four undercase letters)
+# if invalid guess made, respond with too long/too short
+# display result of guess
+# respond with correct number of colors
+# respond with correct number of positions
+# run a game loop
+# track number of guesses taken
+# prompt user to guess again
+# timer function to be displayed after guessing correct sequence
+# enter the game/play again (p)
+# instructions function (i)
+# exit/quit game (q)
+# guess again
