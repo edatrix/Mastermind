@@ -1,24 +1,26 @@
-# define sequence [colors]
 # track number of guesses taken
-# randomly pick a winning combination of colors/positions []
+# What's your guess?"
 
 class GuessChecker
   def initialize
-    @valid_guess = 0
+    
   end
 
 
-  def Correct?
-    @user_input = @correct_color_sequence
-    puts "Congratulations! You guessed the sequence #{@correct_guess} in {#{@valid_guess}} guesses over #{time(minutes,seconds)}. /n Do you want to (p)lay again or (q)uit?"
+  def correct?(user_input, secret_sequence)
+    user_input == secret_sequence
   end
 
-  def Incorrect?
+  def incorrect?
     !Correct?
   end
 
-  def Count_Guesses
+  def count_guesses
     @valid_guess.count
   end
+
+  Colors?
+
+  Places?
 
 end

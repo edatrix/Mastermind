@@ -10,6 +10,7 @@ class Timer
     @end_time - @start_time
 
   def start_time
+    Time.now
   end
 
   def end_time
