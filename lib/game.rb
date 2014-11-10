@@ -7,7 +7,10 @@
 
 class Game
   def initialize(sequence)
-    @correct_guess = sequence
+    @correct_guess = []
+    4.times {@correct_guess << ["r", "g", "b", "y"].sample}
+    puts Printer.method to write "I have generated"
+    @correct_guess.to_s
   end
 
   def play

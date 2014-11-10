@@ -6,12 +6,10 @@ class Timer
     @time = 0
   end
 
-  def time
-    @end_time -
+  def total_time
+    @end_time - @start_time
 
   def start_time
-
-    .pstrftime
   end
 
   def end_time
@@ -19,10 +17,12 @@ class Timer
     .pstrftime
   end
 
+
   def time block
   t = Time.now
   result = eval(block)
   puts "\nCompleted in #{(Time.now - t).format} seconds"
   result
+
 end
 end
