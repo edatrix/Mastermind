@@ -3,8 +3,8 @@
 
 class GuessChecker
   def initialize(user_input, secret_sequence)
-    @user_input = user_input                   # => "bbbb"
-    @secret_sequence = secret_sequence         # => "ybyy"
+    @user_input = user_input.split(//)            # => ["o", "b", "y", "r"]
+    @secret_sequence = secret_sequence.split(//)  # => ["y", "b", "y", "y"]
   end
 
   def correct?
@@ -13,10 +13,6 @@ class GuessChecker
 
   def incorrect?
     !correct?
-  end
-
-  def count_guesses
-    @valid_guess.count
   end
 
   def correct_positions
@@ -41,22 +37,31 @@ class GuessChecker
     end
   end
 
-  def correct_colors
-    strand1 = @user_input.split(//)        # => ["b", "b", "b", "b"]
-    strand2 = @secret_sequence.split(//)   # => ["y", "b", "y", "y"]
-    color1 = strand1.pop                   # => "b"
-    strand2.delete(color1)                 # => "b"
-    color2 = strand1.pop                   # => "b"
-    strand2.delete(color2)                 # => nil
-    color3 = strand1.pop                   # => "b"
-    strand2.delete(color3)                 # => nil
-    color4 = strand1.pop                   # => "b"
-    strand2.delete(color4)                 # => nil
-    incorrect_colors = strand2.count       # => 3
-    correct_colors = 4 - incorrect_colors  # => 1
-  end
+def correct_colors
+    color1 = @user_input.pop  # => "r"
+    color2 = @user_input.pop  # => "y"
+    color3 = @user_input.pop  # => "b"
+    color4 = @user_input.pop  # => "o"
 
+  if @secret_sequence.include?(color1)                        # => false
+  @secret_sequence.delete_at(@secret_sequence.index(color1))
+  end                                                         # => nil
+
+  if @secret_sequence.include?(color2)                        # => true
+  @secret_sequence.delete_at(@secret_sequence.index(color2))  # => "y"
+  end                                                         # => "y"
+
+  if @secret_sequence.include?(color3)                        # => true
+  @secret_sequence.delete_at(@secret_sequence.index(color3))  # => "b"
+  end                                                         # => "b"
+
+  if @secret_sequence.include?(color4)                        # => false
+  @secret_sequence.delete_at(@secret_sequence.index(color4))
+  end                                                         # => nil
+
+  correct_colors = 4 - @secret_sequence.count  # => 2
+end
 end
 
-guess1 = GuessChecker.new("bbbb", "ybyy")  # => #<GuessChecker:0x007fb5b9907b00 @user_input="bbbb", @secret_sequence="ybyy">
-guess1.correct_colors                      # => 1
+guess1 = GuessChecker.new("obyr", "ybyy")  # => #<GuessChecker:0x007fe07a0f3248 @user_input=["o", "b", "y", "r"], @secret_sequence=["y", "b", "y", "y"]>
+guess1.correct_colors                      # => 2

@@ -9,6 +9,10 @@ class Guess
     @user_guess.length == 4  # => false
   end
 
+  def count_guesses
+    valid_guess.count
+  end
+
   # def valid_characters?
   #   @user_guess.
   # end
