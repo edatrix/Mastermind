@@ -3,8 +3,8 @@
 
 class GuessChecker
   def initialize(user_input, secret_sequence)
-    @user_input = user_input                   # => "bbyr"
-    @secret_sequence = secret_sequence         # => "bbyy"
+    @user_input = user_input                   # => "bbbb"
+    @secret_sequence = secret_sequence         # => "ybyy"
   end
 
   def correct?
@@ -42,22 +42,21 @@ class GuessChecker
   end
 
   def correct_colors
-    strand1 = @user_input.split(//)       # => ["r", "b", "y", "r"]
-    strand2 = @secret_sequence.split(//)  # => ["b", "b", "y", "y"]
-    tc1 = 4 - (strand1 - strand2).count   # => 3
+    strand1 = @user_input.split(//)        # => ["b", "b", "b", "b"]
+    strand2 = @secret_sequence.split(//)   # => ["y", "b", "y", "y"]
+    color1 = strand1.pop                   # => "b"
+    strand2.delete(color1)                 # => "b"
+    color2 = strand1.pop                   # => "b"
+    strand2.delete(color2)                 # => nil
+    color3 = strand1.pop                   # => "b"
+    strand2.delete(color3)                 # => nil
+    color4 = strand1.pop                   # => "b"
+    strand2.delete(color4)                 # => nil
+    incorrect_colors = strand2.count       # => 3
+    correct_colors = 4 - incorrect_colors  # => 1
   end
-
-    # correct_colors = 4 - {@secret_sequence reject |@user_input|)
-
-  # Places?
 
 end
 
-guess1 = GuessChecker.new("rbyr", "bbyy")  # => #<GuessChecker:0x007fa310a04cf8 @user_input="bbyr", @secret_sequence="bbyy">
-guess1.correct_colors
-
-# ~> NoMethodError
-# ~> undefined method `-' for "b":String
-# ~>
-# ~> /Users/cluhring/Desktop/Chris'_Code/Mastermind/lib/guess_checker.rb:48:in `correct_colors'
-# ~> /Users/cluhring/Desktop/Chris'_Code/Mastermind/lib/guess_checker.rb:60:in `<main>'
+guess1 = GuessChecker.new("bbbb", "ybyy")  # => #<GuessChecker:0x007fb5b9907b00 @user_input="bbbb", @secret_sequence="ybyy">
+guess1.correct_colors                      # => 1
