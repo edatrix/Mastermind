@@ -1,29 +1,32 @@
 class Game
   attr_reader :guess,
               :turns,
-              :random_number,
-              :messages,
+              :secret_sequence,
+              :printer,
               :command,
               :instream,
               :outstream
 
-  def initialize(instream, outstream, messages)
-    @guess         = 0
-    @turns         = 0
-    @random_number = Random.rand(0..1000)
-    @messages      = messages
-    @command       = ""
-    @instream      = instream
-    @outstream     = outstream
+  def initialize(instream, outstream, printer)
+    @guess           = 1
+    # @turns           = 1
+    @secret_sequence = Random.rand(0..1000)
+    @printer         = printer
+    @command         = ""
+    @instream        = instream
+    @outstream       = outstream
+    @start_time      = Time.now
+    @end_time        = Time.now
   end
 
   def play
-    outstream.puts messages.game_intro
+    @start_time
+    outstream.puts printer.play_instructions
     until win? || exit?
-      outstream.puts messages.turn_indicator(turns)
-      outstream.puts messages.game_command_request
-      @command = instream.gets.strip
-      @guess   = command.to_i
+      outstream.puts printer.wrong_guess
+      # outstream.puts printer.game_command_request
+      @command = instream.gets.strip.downcase
+      # @guess   = command.to_i
       process_game_turn
     end
   end
@@ -33,47 +36,48 @@ class Game
   def process_game_turn
     case
     when exit?
-      outstream.puts messages.game_quit
-    when not_a_number?
-      outstream.puts messages.not_a_number
-    when win?
-      outstream.puts messages.game_win
-    when above?
-      outstream.puts messages.guess_above
-      add_turn
-    when below?
-      outstream.puts messages.guess_below
-      add_turn
-    when not_a_valid_number?
-      outstream.puts messages.not_a_valid_number
-    end
+      outstream.puts printer.game_quit
+    when instructions?
+      outstream.puts printer.game_instructions
+    when too_short?
+      outstream.puts printer.too_short
+    when too_long?
+      outstream.puts printer.too_long
+    when correct?
+      @end_time
+      outstream.puts printer.ending(@secret_sequence, game_length)
+    when incorrect?
+      outstream.puts printer.wrong_guess(command, correct_colors, correct_positions, turns)
+      add_guess
   end
 
-  def add_turn
-    @turns += 1
+  def add_guess
+    @guess += 1
   end
 
-  def not_a_valid_number?
-    guess > 1000 || guess < 0
+  def too_short?
+    @instream.length < 4
   end
 
-  def below?
-    guess < random_number && guess >= 0
+  def too_long?
+    @instream.length > 4
+
+  def correct?
+    @instream == @secret_sequence
   end
 
-  def above?
-    guess > random_number && guess <= 1000
-  end
-
-  def win?
-    guess == random_number
-  end
-
-  def not_a_number?
-    guess.to_s != command
-  end
+  def incorrect?
+    !correct?
 
   def exit?
     command == "q" || command == "quit"
   end
+
+  def instructions?
+    command == "i" || command == "instructions"
+
+  def game_length
+    @end_time - @start_time.round
+  end
+
 end

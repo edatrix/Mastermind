@@ -10,23 +10,23 @@ require 'game'
 require 'printer'
 
 class CLI
-  attr_reader :command, :messages, :instream, :outstream
+  attr_reader :command, :printer, :instream, :outstream
 
   def initialize(instream, outstream)
     @command = ""
-    @messages = Printer.new
-    @instream = instream
-    @outstream = outstream
+    @printer = Printer.new
+    @instream = instream  #stdin??? (Josh Cheek)
+    @outstream = outstream  #stdout??? (Josh Cheek)
   end
 
   def call
     outstream.puts printer.intro
     until finished?
       outstream.puts printer.command_request
-      @command = instream.gets.strip
+      @command = instream.gets.strip.downcase
       process_initial_commands
     end
-    outstream.puts Printer.ending
+      outstream.puts printer.ending
   end
 
   private
@@ -34,15 +34,15 @@ class CLI
   def process_initial_commands
     case
     when play?
-      outstream.puts Printer.play_instructions
-      game = Game.new(instream, outstream, messages)
+      outstream.puts printer.play_instructions
+      game = Game.new(instream, outstream, printer)
       game.play
     when instructions?
-      outstream.puts Printer.game_instructions
+      outstream.puts printer.game_instructions
     when finished?
-      outstream.puts Printer.game_quit
-    # else
-    #   outstream.puts messages.not_a_valid_command
+      outstream.puts printer.game_quit
+    else
+      outstream.puts printer.not_a_valid_command
     end
   end
 

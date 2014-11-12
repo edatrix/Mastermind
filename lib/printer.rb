@@ -6,15 +6,23 @@
 class Printer
 
   def intro
-    "Welcome to MASTERMIND"
+    "Welcome to MASTERMIND!"
   end
 
   def command_request
     "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
   end
 
-  def ending
-    "Congratulations! You guessed the sequence '#{@correct_guess.join} in #{guesses.count} guesses over #{time} minutes,
+  def too_short
+    "Your 'guess' was too short, don't worry, this shouldn't count as actual 'guess.'  Please guess again: "
+  end
+
+  def too_long
+    "Your 'guess' was too short, don't worry, this shouldn't count as actual 'guess.'  Please guess again: "
+  end
+
+  def ending(game_length)
+    "Congratulations! You guessed the secret sequence '#{@secret_sequence} in #{guesses.count} guesses over #{game_length} minutes,
 22 seconds.\nDo you want to (p)lay again or (q)uit?"
   end
 
@@ -26,17 +34,17 @@ What's your guess?"
 
   def game_instructions
     "I have generated a random sequence with four elements made up of: (r)ed,(g)reen, (b)lue, and (y)ellow.\n
-    The random sequence can contain any number of Element colors.\n
+    The random sequence can contain any number of element colors.\n
     For example, yyyy could be a winning guess.\n
-    Guess any combination of letters (r,g,b,y) and I will tell you how many color elements you guessed correctly.\n
-    I will also tell you how many positions are correct.\n
+    Guess any combination of letters (rgby) and I will tell you how many color elements you guessed correctly.\n
+    I will also tell you how many positions you've guessed correctly.\n
     Use (q)uit at any time to end the game.\n
     Would you like to (p)lay or (q)uit?"
   end
 
-  def wrong_guess
-    "#{@command} has #{correct_elements.count} of the correct elements with #{correct_positions.count} in the correct positions.\n
-You've taken #{guesses.count} guess.\n What's your next guess?"
+  def wrong_guess(command, correct_colors, correct_positions, turns)
+    "#{command} has #{correct_colors} of the correct elements with #{correct_positions} in the correct positions.\n
+You've taken #{turns} guess.\n What's your next guess?"
   end
 
   def game_quit

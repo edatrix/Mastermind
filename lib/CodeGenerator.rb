@@ -11,7 +11,5 @@ class CodeGenerator
 end
 
 
-code = CodeGenerator.new  # => #<CodeGenerator:0x007fd7a8984428 @secret_sequence=["b", "y", "g", "b"]>
-code.secret_sequence      # => ["b", "y", "g", "b"]
-
-# >> bygb
+code = CodeGenerator.new  # => #<CodeGenerator:0x007f8735070968 @secret_sequence=["g", "y", "y", "g"]>
+code.secret_sequence      # => ["g", "y", "y", "g"]
