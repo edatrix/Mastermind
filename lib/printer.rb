@@ -14,11 +14,13 @@ class Printer
   end
 
   def too_short
-    "Your 'guess' was too short, don't worry, this shouldn't count as actual 'guess.'  Please guess again: "
+    "Your guess was too short, don't worry, this shouldn't count as actual guess.\nPlease guess again."
+    # command_request
   end
 
   def too_long
-    "Your 'guess' was too short, don't worry, this shouldn't count as actual 'guess.'  Please guess again: "
+    "Your guess was too long, don't worry, this shouldn't count as actual guess.\nPlease guess again." 
+    # command_request
   end
 
   def ending(game_length)
@@ -43,6 +45,11 @@ You've taken #{turns} guess.\n What's your next guess?"
 
   def game_quit
     "Thanks for playing Chris Luhring\'s Mastermind.  Have a nice day :)"
+  end
+
+  def not_a_valid_command
+    "I'm sorry, I didn't recognize your command.\n"
+    # command_request
   end
 
 end

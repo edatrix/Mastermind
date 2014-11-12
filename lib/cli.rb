@@ -6,11 +6,14 @@
 # get user input
 # exit/quit game (q)
 
-require_relative 'game'     # => true
-require_relative 'printer'  # => true
+require_relative 'game'            # => true
+require_relative 'printer'         # => false
+require_relative 'code_generator'  # => false
+require_relative 'guess'           # ~> NoMethodError: undefined method `[]' for nil:NilClass
+require_relative 'guess_checker'
 
 class CLI
-  attr_reader :command, :printer, :instream, :outstream  # => nil
+  attr_reader :command, :printer, :instream, :outstream
 
   def initialize(instream, outstream)
     @command = ""
@@ -26,10 +29,10 @@ class CLI
       @command = instream.gets.strip
       process_initial_commands
     end
-      outstream.puts printer.game_quit
+      # outstream.puts printer.game_quit
   end
 
-  private  # => CLI
+  private
 
   def process_initial_commands
     case
@@ -58,3 +61,11 @@ class CLI
     command == "q" || command == "quit"
   end
 end
+
+# ~> NoMethodError
+# ~> undefined method `[]' for nil:NilClass
+# ~>
+# ~> /Users/cluhring/Desktop/Chris'_Code/Mastermind/lib/guess.rb:9:in `<class:Guess>'
+# ~> /Users/cluhring/Desktop/Chris'_Code/Mastermind/lib/guess.rb:1:in `<top (required)>'
+# ~> /Users/cluhring/Desktop/Chris'_Code/Mastermind/lib/cli.rb:12:in `require_relative'
+# ~> /Users/cluhring/Desktop/Chris'_Code/Mastermind/lib/cli.rb:12:in `<main>'
