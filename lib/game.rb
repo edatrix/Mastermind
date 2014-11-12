@@ -1,18 +1,22 @@
+require_relative 'CodeGenerator'  # => true
+
 class Game
-  attr_reader :guess,
-              # :turns,
-              :secret_sequence,
-              :printer,
-              :command,
-              :instream,
-              :outstream
+  attr_reader :guess,            # => :guess
+              :turns,            # => :turns
+              :secret_sequence,  # => :secret_sequence
+              :printer,          # => :printer
+              :command,          # => :command
+              :instream,         # => :instream
+              :outstream,        # => :outstream
+              :start_time,       # => :start_time
+              :end_time          # => nil
 
   def initialize(instream, outstream, printer)
-    @guess           = 1
-    # @turns           = 1
-    @secret_sequence = []
+    @guess           = []
+    @turns           = 1
+    @secret_sequence = CodeGenerator.new
     @printer         = printer
-    @command         = []
+    @command         = ""
     @instream        = instream
     @outstream       = outstream
     @start_time      = Time.now
@@ -20,24 +24,23 @@ class Game
   end
 
   def play
-    @start_time
+    start_time
     outstream.puts printer.play_instructions
-    until win? || exit?
+    until correct? || exit?
       outstream.puts printer.wrong_guess
       # outstream.puts printer.game_command_request
-      @command = instream.gets.strip.downcase
-      # @guess   = command.to_i
+      @command = instream.gets.strip
+      @guess   = command.split(//)
       process_game_turn
     end
   end
 
-  private
+  private  # => Game
 
-                                # => nil
-  def secret_sequence                              # => []
-    4.times {@secret_sequence << ["r", "g", "b", "y"].sample}  # => 4
-    # puts @secret_sequence.join                                 # => nil
-  end
+  # def secret_sequence
+  #   4.times {@secret_sequence << ["r", "g", "b", "y"].sample}
+  #   # puts @secret_sequence.join
+  # end
 
   def process_game_turn
     case
@@ -50,23 +53,23 @@ class Game
     when too_long?
       outstream.puts printer.too_long
     when correct?
-      @end_time
-      outstream.puts printer.ending(@secret_sequence, game_length)
+      outstream.puts printer.ending(@guess, game_length)
+      end_time
     when incorrect?
       outstream.puts printer.wrong_guess(command, correct_colors, correct_positions, turns)
-      add_guess
+      add_turn
   end
 
-  def add_guess
-    @guess += 1
+  def add_turn
+    @turns += 1
   end
 
   def too_short?
-    @instream.length < 4
+    instream.length < 4
   end
 
   def too_long?
-    @instream.length > 4
+    instream.length > 4
 
   def correct?
     @instream == @secret_sequence
@@ -83,11 +86,11 @@ class Game
     command == "i" || command == "instructions"
 
   def game_length
-    @end_time - @start_time.round
+    end_time - start_time.round
   end
 
   def correct_positions
-    strand1 = @user_input.split(//)
+    strand1 = @instream.split(//)
     strand2 = @secret_sequence.split(//)
     tc1 = strand1[0] <=> strand2[0]
     tc2 = strand1[1] <=> strand2[1]
@@ -109,28 +112,31 @@ class Game
   end
 
   def correct_colors
-    color1 = @user_input.pop  # => "r"
-    color2 = @user_input.pop  # => "y"
-    color3 = @user_input.pop  # => "b"
-    color4 = @user_input.pop  # => "o"
+    color1 = @instream.pop
+    color2 = @instream.pop
+    color3 = @instream.pop
+    color4 = @instream.pop
 
-  if @secret_sequence.include?(color1)                        # => false
+  if @secret_sequence.include?(color1)
       @secret_sequence.delete_at(@secret_sequence.index(color1))
-    end                                                         # => nil
+    end
 
-  if @secret_sequence.include?(color2)                        # => true
-      @secret_sequence.delete_at(@secret_sequence.index(color2))  # => "y"
-    end                                                         # => "y"
+  if @secret_sequence.include?(color2)
+      @secret_sequence.delete_at(@secret_sequence.index(color2))
+    end
 
-  if @secret_sequence.include?(color3)                        # => true
-      @secret_sequence.delete_at(@secret_sequence.index(color3))  # => "b"
-    end                                                         # => "b"
+  if @secret_sequence.include?(color3)
+      @secret_sequence.delete_at(@secret_sequence.index(color3))
+    end
 
-  if @secret_sequence.include?(color4)                        # => false
+  if @secret_sequence.include?(color4)
       @secret_sequence.delete_at(@secret_sequence.index(color4))
-    end                                                         # => nil
+    end
 
-  correct_colors = 4 - @secret_sequence.count  # => 2
+  correct_colors = 4 - @secret_sequence.count
   end
-
+end
+end
+end
+end
 end

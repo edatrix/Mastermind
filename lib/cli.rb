@@ -6,11 +6,11 @@
 # get user input
 # exit/quit game (q)
 
-require 'game'
-require 'printer'
+require_relative 'game'     # => true
+require_relative 'printer'  # => true
 
 class CLI
-  attr_reader :command, :printer, :instream, :outstream
+  attr_reader :command, :printer, :instream, :outstream  # => nil
 
   def initialize(instream, outstream)
     @command = ""
@@ -23,13 +23,13 @@ class CLI
     outstream.puts printer.intro
     until finished?
       outstream.puts printer.command_request
-      @command = instream.gets.strip.downcase
+      @command = instream.gets.strip
       process_initial_commands
     end
-      outstream.puts printer.ending
+      outstream.puts printer.game_quit
   end
 
-  private
+  private  # => CLI
 
   def process_initial_commands
     case
@@ -56,6 +56,5 @@ class CLI
 
   def finished?
     command == "q" || command == "quit"
-    exit
   end
 end

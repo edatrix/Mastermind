@@ -33,13 +33,7 @@ What's your guess?"
   end
 
   def game_instructions
-    "I have generated a random sequence with four elements made up of: (r)ed,(g)reen, (b)lue, and (y)ellow.\n
-    The random sequence can contain any number of element colors.\n
-    For example, yyyy could be a winning guess.\n
-    Guess any combination of letters (rgby) and I will tell you how many color elements you guessed correctly.\n
-    I will also tell you how many positions you've guessed correctly.\n
-    Use (q)uit at any time to end the game.\n
-    Would you like to (p)lay or (q)uit?"
+    "\tI have generated a random sequence of four elements made up of: (r)ed, (g)reen, (b)lue, and (y)ellow. The random sequence can contain any number of element colors. For example, yyyy could be a winning guess.  Guess any combination of letters (rgby) and I will tell you how many color elements you guessed correctly.  I will also tell you how many positions you've guessed correctly.  Use (q)uit at any time to end the game."
   end
 
   def wrong_guess(command, correct_colors, correct_positions, turns)
