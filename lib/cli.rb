@@ -1,35 +1,21 @@
-# get user input
-# run a game loop
-# enter the game/play again (p)
-# instructions function (i)
-# guess again
-# get user input
-# exit/quit game (q)
-
-require_relative 'game'            # => true
-require_relative 'printer'         # => false
-require_relative 'code_generator'  # => false
-require_relative 'guess'           # ~> NoMethodError: undefined method `[]' for nil:NilClass
-require_relative 'guess_checker'
+require_relative 'game'
 
 class CLI
-  attr_reader :command, :printer, :instream, :outstream
 
   def initialize(instream, outstream)
     @command = ""
     @printer = Printer.new
-    @instream = instream  #stdin??? (Josh Cheek)
-    @outstream = outstream  #stdout??? (Josh Cheek)
+    @instream = instream
+    @outstream = outstream
   end
 
   def call
-    outstream.puts printer.intro
+    @outstream.puts @printer.intro
     until finished?
-      outstream.puts printer.command_request
-      @command = instream.gets.strip
+      @outstream.puts @printer.command_request
+      @command = @instream.gets.strip
       process_initial_commands
     end
-      # outstream.puts printer.game_quit
   end
 
   private
@@ -37,35 +23,27 @@ class CLI
   def process_initial_commands
     case
     when play?
-      outstream.puts printer.play_instructions
-      game = Game.new(instream, outstream, printer)
+      @outstream.puts @printer.play_instructions
+      game = Game.new(@instream, @outstream, @printer)
       game.play
     when instructions?
-      outstream.puts printer.game_instructions
+      @outstream.puts @printer.game_instructions
     when finished?
-      outstream.puts printer.game_quit
+      @outstream.puts @printer.game_quit
     else
-      outstream.puts printer.not_a_valid_command
+      @outstream.puts @printer.not_a_valid_command
     end
   end
 
   def play?
-    command == "p" || command == "play"
+    @command == "p" || @command == "play"
   end
 
   def instructions?
-    command == "i" || command == "instructions"
+    @command == "i" || @command == "instructions"
   end
 
   def finished?
-    command == "q" || command == "quit"
+    @command == "q" || @command == "quit"
   end
 end
-
-# ~> NoMethodError
-# ~> undefined method `[]' for nil:NilClass
-# ~>
-# ~> /Users/cluhring/Desktop/Chris'_Code/Mastermind/lib/guess.rb:9:in `<class:Guess>'
-# ~> /Users/cluhring/Desktop/Chris'_Code/Mastermind/lib/guess.rb:1:in `<top (required)>'
-# ~> /Users/cluhring/Desktop/Chris'_Code/Mastermind/lib/cli.rb:12:in `require_relative'
-# ~> /Users/cluhring/Desktop/Chris'_Code/Mastermind/lib/cli.rb:12:in `<main>'

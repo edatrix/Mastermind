@@ -1,7 +1,5 @@
-# track number of guesses taken
-# What's your guess?"
-
 class GuessChecker
+
   def initialize(user_input, secret_sequence)
     # @user_input = user_input.split(//)            # => ["o", "b", "y", "r"]
     # @secret_sequence = secret_sequence.split(//)  # => ["y", "b", "y", "y"]
